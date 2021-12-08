@@ -1,18 +1,16 @@
 import base64
 import json
 
-from django.contrib.auth import authenticate, login
 from django.core import serializers
+from django.db.models import Sum, F, Value
 from django.db.models.functions import Concat
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from django.db.models import Count, Sum, F, Value
 
-from core.basic_authentication import logged_in_or_basicauth
 from core.forms import IndexPageForm
-from core.tools import get_week_list, get_current_week
 from core.models import Order, Client
+from core.tools import get_week_list, get_current_week
 
 
 class OrderView(View):
@@ -26,10 +24,8 @@ class OrderView(View):
 
 
 def order_post(request):
-    print('reqq')
     if request.user.is_authenticated:
         if request.method == 'POST':
-            print('reqq POST')
             client_id = request.POST['client_id']
             client = Client.objects.get(id=client_id)
             create_date = request.POST['order_date']
@@ -116,5 +112,3 @@ def export_order_by_json(request):
     response.status_code = 401
     response['WWW-Authenticate'] = 'Basic realm="%s"' % "Basci Auth Protected"
     return response
-
-
