@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index page</title>
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+</head>
+<body>
+<div class="container">
+
+    <form method="get" class="card" action="/">
+        <div class="form-control">
+            {{ form }}
+        </div>
+        <button class="btn primary form-row" type="submit">Загрузить</button>
+    </form>
+    {% if data %}
+        {% for datum in data %}
+            <div class="card"
+                 style=" display: flex; justify-content: space-between; align-items: center;">{{ forloop.counter }}) {{ datum.date }}
+                <div>{{ datum.clients_name }}</div>
+                {{ datum.sum }}</div>
+        {% endfor %}
+
+        <div class="card" style=" display: flex; justify-content: space-between; align-items: center;">
+            <strong>Total:</strong>
+            <div>
+                {% for name in names %}
+                    {{ name }} <br>
+                {% endfor %}
+
+            </div>
+            <strong>{{ total_sum }}</strong>
+        </div>
+    {% else %}
+        <div class="alert card">
+            <h1>В выбранной Вами неделе нет заказов. Попробуйте выбрать другие недели!</h1>
+        </div>
+    {% endif %}
+</div>
+</body>
+</html>
