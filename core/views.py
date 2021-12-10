@@ -1,6 +1,6 @@
 import base64
 import json
-
+from django.conf import settings
 from django.core import serializers
 from django.db.models import Sum, F, Value
 from django.db.models.functions import Concat
@@ -81,7 +81,7 @@ def index_page(request):
         )).values_list('fullname', flat=True).distinct()
 
         data.append({
-            'date': i['date'].strftime('%d. %m. %Y '),
+            'date': i['date'].strftime('%b. %m. %Y '),
             'clients_name': '; '.join(clients_names_for_day),
             'sum': float(i['daily_sum'])
         })
@@ -104,11 +104,12 @@ def export_order_by_json(request):
         if len(auth) == 2:
             if auth[0].lower() == "basic":
                 username, password = base64.b64decode(auth[1]).split(':'.encode('ascii'))
-                if username.decode("utf-8") == 'admin' and password.decode("utf-8") == '12345':
+                if username.decode("utf-8") == settings.BASIC_AUTH_USERNAME \
+                        and password.decode("utf-8") == settings.BASIC_AUTH_PASSWORD:
                     qs = Order.objects.all()
                     qs_json = serializers.serialize('json', qs)
                     return HttpResponse(qs_json, content_type='application/json')
     response = HttpResponse()
     response.status_code = 401
-    response['WWW-Authenticate'] = 'Basic realm="%s"' % "Basci Auth Protected"
+    response['WWW-Authenticate'] = 'Basic realm="%s"' % "Basic Auth Protected"
     return response

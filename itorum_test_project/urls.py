@@ -24,6 +24,6 @@ urlpatterns = [
                   path('order/', OrderView.as_view(), name='order'),
                   path('order_post/', order_post, name='order_post'),
                   path('delete_order/<int:pk>/', order_delete, name='order_delete'),
-                  path('', index_page),
-                  path('export/', export_order_by_json),
+                  path('', index_page, name='order_report'),
+                  path('export/', export_order_by_json, name='export'),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

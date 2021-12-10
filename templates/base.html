@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+    <title>{% block title %}
+
+    {% endblock %}</title>
+</head>
+<body>
+<div class="list card" style="padding-left: 20px;">
+
+    <div class="list-item"><a href="{% url 'order_report' %}">Отчёт по заказам</a></div>
+    <div class="list-item"><a href="{% url 'order' %}">Заказы(Удаление/добавление)</a></div>
+    <div class="list-item"><a href="{% url 'export' %}">Экспорт заказов</a></div>
+
+
+</div>
+<br>
+{% block content %}
+
+{% endblock %}
+</body>
+</html>
